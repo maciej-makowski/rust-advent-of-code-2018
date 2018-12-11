@@ -11,3 +11,5 @@ day3 = []
 all = ["day1", "day2", "day3"]
 
 [dependencies]
+regex = "*"
+lazy_static = "*"
