@@ -40,10 +40,25 @@ fn are_close(left_id: &str, right_id: &str) -> bool {
     return false;
   }
 
+  let mut diffs = 0;
+
   // TODO: Exit as soon as we found a second difference
-  left_id.chars().zip(right_id.chars()).fold(0, |acc, (lc, rc)| {
-    if lc == rc { acc } else { acc + 1} 
-  }) == 1
+  left_id.chars().zip(right_id.chars()).scan(&mut diffs, |d, (lc, rc)| {
+    if lc != rc {
+      // Increase diffs
+      **d += 1
+    }
+    if **d > 1 {
+      // Already know we have more than one difference, short-circut the iterator
+      None
+    } else {
+      // Continue
+      Some(())
+    }
+  // Force evaluation of the iterator
+  }).count();
+
+  diffs == 1
 }
 
 /// O(n^2) iteration over all the ids that should return as soon
