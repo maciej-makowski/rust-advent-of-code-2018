@@ -1,27 +1,19 @@
 use std::collections::HashSet;
-use std::fs::File;
-use std::io::{BufRead, BufReader};
 use std::iter::{repeat};
 
+use crate::utils::{read_input};
+
 fn read_input_file(path: &str) -> Vec<i32> {
-  let file: File = File::open(path).expect(&format!("Unable to open file: {}", path));
-  let reader: BufReader<&File> = BufReader::new(&file);
-  reader
-    .lines()
-    .enumerate()
-    .map(|(i, r_val)| {
-      let val = r_val.expect(&format!("Unable to read line: {}", i));
-      let item = val.parse::<i32>().expect(&format!(
-        "Unable to parse line {}, '{}' to a number",
-        i, val
-      ));
-      item
-    })
-    .collect()
+  read_input(path).iter().enumerate().map(|(i, line): (usize, &String)|
+    line.parse::<i32>().unwrap_or_else(|_| panic!(
+      "Unable to parse line {}, '{}' to a number",
+      i, line
+    ))
+  ).collect()
 }
 
 /// Seems to be a simple case of reading the input and summing it
-pub fn solve_1_part1(path: &str) -> i32 {
+pub fn solve_part1(path: &str) -> i32 {
   read_input_file(path).iter().sum()
 }
 
@@ -30,7 +22,7 @@ pub fn solve_1_part1(path: &str) -> i32 {
 /// current sum - acc, and a HashSet reference that tracks all the sums that were encountered
 /// up to the point. Final trick is to use a short-circuting of Rust Scan to exit as soon as
 /// we encounter acc value that is already present in a set.
-pub fn solve_1_part2(path: &str) -> i32 {
+pub fn solve_part2(path: &str) -> i32 {
   let numbers = read_input_file(path);
   let mut acc: i32 = 0;
   let mut set: HashSet<i32> = HashSet::new();
