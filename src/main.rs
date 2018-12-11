@@ -10,5 +10,6 @@ fn main() {
     
     if cfg!(feature = "day2") {
         println!("Day2, part1: {}", day2::solve_part1("data/day2/input.txt"));
+        println!("Day2, part2: {:?}", day2::solve_part2("data/day2/input.txt"));
     }
 }

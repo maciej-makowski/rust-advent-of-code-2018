@@ -32,3 +32,60 @@ pub fn solve_part1(path: &str) -> i32 {
 
   checksum_components.0 * checksum_components.1
 }
+
+/// Simple comparator that retruns true when there is exactly one
+/// difference between ids
+fn are_close(left_id: &str, right_id: &str) -> bool {
+  if left_id.len() !=  right_id.len() {
+    return false;
+  }
+
+  // TODO: Exit as soon as we found a second difference
+  left_id.chars().zip(right_id.chars()).fold(0, |acc, (lc, rc)| {
+    if lc == rc { acc } else { acc + 1} 
+  }) == 1
+}
+
+/// O(n^2) iteration over all the ids that should return as soon
+/// as the first match is found. Assuming there is a match, this
+/// should never to more than (n over 2) iterations, since
+/// 'are_close' comparision is comutative
+pub fn solve_part2(path: &str) -> String {
+  let input = read_input(path);
+  let matched = input.iter().flat_map(|left_id|
+    input.iter().map(move |right_id| (left_id, right_id))
+  )
+  .find(|pair| are_close(pair.0, pair.1))
+  .unwrap_or_else(|| panic!("Couldn't find close pair"));
+
+  matched.0.chars().zip(matched.1.chars())
+    .filter(|(l, r)| l == r)
+    .map(|t| t.0)
+    .collect()
+}
+
+
+#[cfg(test)]
+mod test {
+  use super::*;
+
+  #[test]
+  fn are_close_returns_false_when_strings_are_different_length() {
+    assert!(!are_close("abcde", "abc"))
+  }
+
+  #[test]
+  fn are_close_returns_false_when_strings_have_more_then_one_different_character() {
+    assert!(!are_close("abcd", "abbb"))
+  }
+
+  #[test]
+  fn are_close_returns_false_if_strings_are_same() {
+    assert!(!are_close("abcd", "abcd"))
+  }
+
+  #[test]
+  fn are_close_returns_true_if_strings_have_no_more_then_one_different_character() {
+    assert!(are_close("abcd", "abcb"))
+  }
+}
