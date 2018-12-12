@@ -14,8 +14,8 @@ pub fn solve_part2(path: &str) -> usize {
   let lines = read_input(path);
   let polymer = lines.get(0).expect("Unable to read polymer");
 
-  (('A' as u8) .. ('Z' as u8))
-    .map(|ascii_code| char::from(ascii_code))
+  (b'A' .. b'Z')
+    .map(char::from)
     .map(|unit|
       polymer.chars().filter(|c|
         !c.eq_ignore_ascii_case(&unit)
