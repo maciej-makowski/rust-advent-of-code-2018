@@ -8,8 +8,12 @@ edition = "2018"
 day1 = []
 day2 = []
 day3 = []
-all = ["day1", "day2", "day3"]
+day4 = []
+all = ["day1", "day2", "day3", "day4"]
+default = ["all"]
 
 [dependencies]
 regex = "*"
 lazy_static = "*"
+chrono = "*"
+time = "*"

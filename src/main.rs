@@ -1,9 +1,12 @@
 #[macro_use] extern crate lazy_static;
 extern crate regex;
+extern crate chrono;
+extern crate time;
 
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 mod utils;
 
@@ -21,5 +24,10 @@ fn main() {
     if cfg!(feature = "day3") {
         println!("Day3, part1: {}", day3::solve_part1("data/day3/input.txt"));
         println!("Day3, part1: {}", day3::solve_part2("data/day3/input.txt"));
+    }
+
+    if cfg!(feature = "day4") {
+        println!("Day4, part1: {}", day4::solve_part1("data/day4/input.txt"));
+        println!("Day4, part2: {}", day4::solve_part2("data/day4/input.txt"));
     }
 }

@@ -6,8 +6,8 @@ use regex::Regex;
 use crate::utils::{read_input};
 
 lazy_static! {
-    static ref CLAIM_MATCHER: Regex = Regex::new(".?([0-9]+) @ ([0-9]+),([0-9]+): ([0-9]+)x([0-9]+).*")
-      .unwrap();
+  static ref CLAIM_MATCHER: Regex = Regex::new(".?([0-9]+) @ ([0-9]+),([0-9]+): ([0-9]+)x([0-9]+).*")
+    .unwrap();
 }
 
 #[derive(Debug)]
@@ -26,7 +26,7 @@ struct Claim {
 }
 
 impl Claim {
-  fn from_input(line: &String) -> Result<Claim, ClaimError> {
+  fn from_input(line: &str) -> Result<Claim, ClaimError> {
     let fields = vec!("id", "x", "y", "width", "height");
     let captures = CLAIM_MATCHER.captures(line)
       .ok_or_else(|| ClaimError::ParseLineError(line.to_string()))?;
@@ -100,7 +100,8 @@ impl Fabric {
 
 fn load_claims(path: &str) -> Vec<Claim> {
   let lines = read_input(path);
-  let parsed_claims: Result<Vec<Claim>, _> = lines.iter().map(Claim::from_input).collect();
+  let parsed_claims: Result<Vec<Claim>, _> = lines.iter()
+    .map(|s| Claim::from_input(s)).collect();
   parsed_claims.expect("An error occured while parsing claims")  
 }
 
