@@ -24,6 +24,11 @@ struct Map2D<T> {
 }
 
 impl <T> Map2D<T> where T: Clone {
+  fn for_points<U>(coords: &[U], default: T) -> Map2D<T> where U: Coord {
+    let (width, height) = get_map_dimensions(coords);
+    Map2D::new(width, height, default)
+  }
+
   fn new(width: u32, height: u32, default: T) -> Map2D<T> {
     Map2D {
       width,
@@ -32,20 +37,20 @@ impl <T> Map2D<T> where T: Clone {
     }
   }
 
-  fn point_coords(&self, x: u32, y: u32) -> Option<usize> {
-    if x >= self.width || y >= self.height {
+  fn point_coords(&self, coord: &Coord) -> Option<usize> {
+    if coord.get_x() >= self.width || coord.get_y() >= self.height {
       None
     } else {
-      Some ((x + y * self.width) as usize)
+      Some ((coord.get_x() + coord.get_y() * self.width) as usize)
     }
   }
 
-  fn get(&self, x: u32, y: u32) -> Option<&T> {
-    self.point_coords(x, y).and_then(|c| self.area.get(c))
+  fn get(&self, coord: &Coord) -> Option<&T> {
+    self.point_coords(coord).and_then(|c| self.area.get(c))
   }
 
-  fn set(&mut self, x: u32, y: u32, value: T) -> Option<()> {
-    self.point_coords(x, y).and_then(|c| {
+  fn set(&mut self, coord: &Coord, value: T) -> Option<()> {
+    self.point_coords(coord).and_then(|c| {
       self.area[c] = value;
       Some(())
     })
