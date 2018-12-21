@@ -12,8 +12,10 @@ day4 = []
 day5 = []
 day7 = []
 day8 = []
-all = ["day1", "day2", "day3", "day4", "day5", "day7", "day8"]
-default = ["day8"]
+day9 = []
+all = ["day1", "day2", "day3", "day4", "day5", "day7", "day8", "day9"]
+default = ["day9"]
+test = ["day9"]
 
 [dependencies]
 regex = "*"
