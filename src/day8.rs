@@ -1,6 +1,6 @@
 use crate::utils::read_input;
 
-fn load_tree_list(path: &str) -> Vec<u32> {
+fn load_tree_list(path: &str) -> Vec<usize> {
   let lines = read_input(path);
   let input = lines.get(0)
     .unwrap_or_else(|| panic!("Unable to read line from input file: {}", path));
@@ -8,21 +8,21 @@ fn load_tree_list(path: &str) -> Vec<u32> {
   parse_tree_list(input)
 }
 
-fn parse_tree_list(input_line: &str) -> Vec<u32> {
+fn parse_tree_list(input_line: &str) -> Vec<usize> {
   input_line.split(' ').map(|s| 
-    s.parse::<u32>().unwrap_or_else(|e| 
+    s.parse::<usize>().unwrap_or_else(|e| 
       panic!("Unable to convert to number: {:?}", e))
     ).collect()
 }
 
-fn parse_node(tree: &[u32], start_index: usize) -> (usize, u32) {
-  let mut metadata_sum = 0u32;
+fn sum_node_metadata(tree: &[usize], start_index: usize) -> (usize, usize) {
+  let mut metadata_sum = 0_usize;
   let children = tree[start_index];
-  let metadata_entries = tree[start_index + 1] as usize;
+  let metadata_entries = tree[start_index + 1];
   let mut next_index = start_index + 2;
 
   for _ in 0 .. children {
-    let (end_index, child_sum) = parse_node(tree, next_index);
+    let (end_index, child_sum) = sum_node_metadata(tree, next_index);
     metadata_sum += child_sum;
     next_index = end_index;
   }
@@ -32,13 +32,39 @@ fn parse_node(tree: &[u32], start_index: usize) -> (usize, u32) {
   (next_index + metadata_entries, metadata_sum)
 }
 
-pub fn solve_part1(path: &str) -> u32 {
-  let tree = load_tree_list(path);
-  parse_node(&tree, 0).1
+fn calc_node_value(tree: &[usize], start_index: usize) -> (usize, usize) {
+  let mut node_value = 0_usize;
+
+  let children_count = tree[start_index];
+  let metadata_count = tree[start_index + 1];
+  let mut children_values: Vec<usize> = Vec::with_capacity(children_count);
+  let mut next_index = start_index + 2;
+
+  for _ in 0 .. children_count {
+    let (end_index, children_value) = calc_node_value(tree, next_index);
+    children_values.push(children_value);
+    next_index = end_index;
+  }
+
+  if children_count == 0 {
+    node_value += &tree[next_index .. next_index + metadata_count].iter().sum();
+  } else {
+    node_value += &tree[next_index .. next_index + metadata_count].iter().filter_map(|index| {
+      children_values.get(*index - 1)
+    }).sum()
+  }
+
+  (next_index + metadata_count, node_value)
 }
 
-pub fn solve_part2(_path: &str) -> u32 {
-  panic!("Not implemented")
+pub fn solve_part1(path: &str) -> usize {
+  let tree = load_tree_list(path);
+  sum_node_metadata(&tree, 0).1
+}
+
+pub fn solve_part2(path: &str) -> usize {
+  let tree = load_tree_list(path);
+  calc_node_value(&tree, 0).1
 }
 
 #[cfg(test)]
