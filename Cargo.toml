@@ -10,11 +10,13 @@ day2 = []
 day3 = []
 day4 = []
 day5 = []
-all = ["day1", "day2", "day3", "day4"]
-default = ["day5"]
+day7 = []
+all = ["day1", "day2", "day3", "day4", "day5", "day7"]
+default = ["day7"]
 
 [dependencies]
 regex = "*"
 lazy_static = "*"
 chrono = "*"
 time = "*"
+itertools = "*"
