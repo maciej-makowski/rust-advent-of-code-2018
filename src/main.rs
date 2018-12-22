@@ -11,6 +11,7 @@ mod day5;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
 mod utils;
 
@@ -56,12 +57,12 @@ fn main() {
     if cfg!(feature = "day9") {
         println!("Day9, part1: {}", day9::solve_part1(410, 72059));
         println!("Day9, part2: {}", day9::solve_part2(410, 7_205_900));
-        /*
-        println!("Day9, example part1: {}", day9::solve_part1("data/day9/example.txt"));
-        println!("Day9, part1: {}", day9::solve_part1("data/day9/input.txt"));
+    }
 
-        println!("Day9, example part2: {}", day9::solve_part2("data/day9/example.txt"));
-        println!("Day9, part2: {}", day9::solve_part2("data/day9/input.txt"));
-        */
+    if cfg!(feature = "day10") {
+        println!("Day10, example part1: {:?}", day10::solve_part1("data/day10/example.txt"));
+        // println!("Day10, part1: {}", day10::solve_part1("data/day10/input.txt"));
+        println!("Day10, example part2: {:?}", day10::solve_part2("data/day10/example.txt"));
+        // println!("Day10, part2: {}", day10::solve_part2("data/day10/input.txt"));
     }
 }

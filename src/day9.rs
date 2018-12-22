@@ -1,7 +1,6 @@
 use std::iter::repeat_with;
 use std::cell::RefCell;
 use std::rc::Rc;
-use std::cmp::Eq;
 
 pub fn solve_part1(players: usize, last_marble: u32) -> u32 {
   let mut next_id = 1_u32;
